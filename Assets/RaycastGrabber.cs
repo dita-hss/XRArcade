@@ -27,7 +27,8 @@ public class RaycastGrabber : MonoBehaviour
     //////////////////////////////////////////////////
 
     private bool holdingWall = false;
-    private GameObject currentRightHandWeapon = null;
+    private GameObject currentRightHandWall = null;
+    private GameObject materialObject = null;
 
     void Start()
     {
@@ -38,35 +39,26 @@ public class RaycastGrabber : MonoBehaviour
 
     // Update is called once per frame
     void DoRayCast(InputAction.CallbackContext __) {
-        //Debug.Log("processing");
 
-        // The Unity raycast hit object, which will store the output of our raycast
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        // Parameters: position to start the ray, direction to project the ray, output for raycast, limit of ray length, and layer mask
-        //Debug.Log(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, teleportMask));
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, teleportMask)) {
 
-            // The object we hit will be in the collider property of our hit object.
-            // We can get the name of that object by accessing it's Game Object then the name property
-            
-            // Don't forget to attach the player origin in the editor!
-            //playerOrigin.transform.position = hit.collider.gameObject.transform.position;
-
-            ////Debug.Log("bool check: " + holdingWeapon);
-            // if currently holding weapon, destroy the weapon being held, and replace it with the new weapon
+           
             if (holdingWall){
                 DestroyCurrentWall();
-                //currentRightHandWeapon.transform.parent = null;
             }
 
-            ///if its a throwing knife , then instantiate it in both hands
             if (hit.collider.gameObject.name == "Wall") {
 
-                ///instantiate the weapon in both hands and set the rotation
-                currentRightHandWeapon = Instantiate(prefabWall, rightHandTransform.position, rightHandTransform.rotation, rightHandTransform);
+                currentRightHandWall = Instantiate(prefabWall, rightHandTransform.position, rightHandTransform.rotation, rightHandTransform);
+                currentRightHandWall.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-                currentRightHandWeapon.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                // if the object has a material, change the mateiral of the currentRightHandWall to it
+
+                /// NOT TESTED -- TEST TEST TEST TEST TEST TEST TEST TEST
+                if (materialObject != null) {
+                    currentRightHandWall.GetComponent<MeshRenderer>().material = materialObject.GetComponent<MeshRenderer>().material;
+                }
                 
             }
             
@@ -82,8 +74,8 @@ public class RaycastGrabber : MonoBehaviour
         // if currently holding weapon, destroy the weapon being held, and replace it with the new weapon
         if (holdingWall){
             //DestroyCurrentWall();
-            currentRightHandWeapon.transform.parent = null;
-            currentRightHandWeapon = null;
+            currentRightHandWall.transform.parent = null;
+            currentRightHandWall = null;
         }
 
         
@@ -97,10 +89,10 @@ public class RaycastGrabber : MonoBehaviour
     /// need to destroy the current weapon before instantiating a new one
     void DestroyCurrentWall() {
 
-        if (currentRightHandWeapon != null) 
+        if (currentRightHandWall != null) 
         {
-            Destroy(currentRightHandWeapon);
-            currentRightHandWeapon = null;
+            Destroy(currentRightHandWall);
+            currentRightHandWall = null;
         }
 
     }
