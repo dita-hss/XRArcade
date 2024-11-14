@@ -10,6 +10,8 @@ public class RaycastGrabber : MonoBehaviour
     [SerializeField]
     private LayerMask teleportMask;
     [SerializeField]
+    private LayerMask stylesMask;
+    [SerializeField]
     private InputActionReference teleportButtonPress;
     [SerializeField]
     private InputActionReference dropButtonPressAction;
@@ -28,7 +30,7 @@ public class RaycastGrabber : MonoBehaviour
 
     private bool holdingWall = false;
     private GameObject currentRightHandWall = null;
-    private GameObject materialObject = null;
+    private Material storedMaterial = null;
 
     void Start()
     {
@@ -38,37 +40,48 @@ public class RaycastGrabber : MonoBehaviour
     }
 
     // Update is called once per frame
-    void DoRayCast(InputAction.CallbackContext __) {
-
+    void DoRayCast(InputAction.CallbackContext __){
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, teleportMask)) {
-
-           
-            if (holdingWall){
-                DestroyCurrentWall();
-            }
-
-            if (hit.collider.gameObject.name == "Wall") {
+        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, teleportMask | stylesMask)){
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Styles")){
+                Renderer renderer = hit.collider.GetComponent<Renderer>();
+                    //Debug.Log("renderer: " + renderer);
+                if (renderer != null){
+                    storedMaterial = renderer.material;
+                        //Debug.Log("storedMaterial: " + storedMaterial);
+                }
+            } else if (hit.collider.gameObject.name == "Wall") {
+                if (holdingWall){
+                    DestroyCurrentWall();
+                }
 
                 currentRightHandWall = Instantiate(prefabWall, rightHandTransform.position, rightHandTransform.rotation, rightHandTransform);
                 currentRightHandWall.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-                // if the object has a material, change the mateiral of the currentRightHandWall to it
-
-                /// NOT TESTED -- TEST TEST TEST TEST TEST TEST TEST TEST
-                if (materialObject != null) {
-                    currentRightHandWall.GetComponent<MeshRenderer>().material = materialObject.GetComponent<MeshRenderer>().material;
+                if (storedMaterial != null){
+                    Renderer wallRenderer = currentRightHandWall.GetComponent<Renderer>();
+                    if (wallRenderer != null){
+                        wallRenderer.material = storedMaterial;
+                    }
                 }
-                
-            }
-            
 
-            holdingWall = true;
-        } 
+                holdingWall = true;
+            } else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Grabable")) {
+                if (holdingWall){
+                    DestroyCurrentWall();
+                }
+
+                //currentRightHandWall = hit.collider.gameObject;
+            }
+
+        }
+        
+
     }
+    
 
     void dropItem(InputAction.CallbackContext __) {
-        //Debug.Log("processing");
+            //Debug.Log("dropping");
 
         ////Debug.Log("bool check: " + holdingWeapon);
         // if currently holding weapon, destroy the weapon being held, and replace it with the new weapon
