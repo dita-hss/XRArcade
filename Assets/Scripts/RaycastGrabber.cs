@@ -48,6 +48,16 @@ public class RaycastGrabber : MonoBehaviour
 
     [SerializeField]
     private GameObject prefabCandycane;
+
+    [SerializeField]
+    private GameObject prefabRedGumdrop;
+
+    [SerializeField]
+    private GameObject prefabBlueGumdrop;
+
+    [SerializeField]
+    private GameObject prefabSnowflake;
+
     //////////////////////////////////////////////////
 
     private bool holdingWall = false;
@@ -91,6 +101,19 @@ public class RaycastGrabber : MonoBehaviour
                 Renderer renderer = hit.collider.GetComponent<Renderer>();
                 if (renderer != null){
                     storedMaterial = renderer.material;
+
+                    // Spawn a wall with the stored style
+                    Vector3 spawnPosition = rightHandTransform.position + rightHandTransform.forward * 0.75f;
+                    currentRightHandWall = Instantiate(prefabWall, spawnPosition, rightHandTransform.rotation, rightHandTransform);
+                    currentRightHandWall.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                    currentRightHandWall.transform.localScale = currentRightHandWall.transform.localScale * 0.50f;
+
+                    Renderer wallRenderer = currentRightHandWall.GetComponent<Renderer>();
+                    if (wallRenderer != null){
+                        wallRenderer.material = storedMaterial;
+                    }
+
+                    holdingWall = true;
                 }
             } else if (hit.collider.gameObject.name == "Wall") {
                 Debug.Log(hit.collider.gameObject.name);
@@ -120,20 +143,15 @@ public class RaycastGrabber : MonoBehaviour
                 currentRightHandWall.transform.localPosition = new Vector3(0, 0, 0.75f);
                 currentRightHandWall.transform.localRotation = Quaternion.identity;
                 holdingWall = true;
-            } else if ((hit.collider.gameObject.name == "candycane") && (hit.collider.gameObject.tag == "Original")) {
-                if (holdingTopping){
-                    DestroyCurrentWall();
-                }
-                Debug.Log(hit.collider.gameObject.name);
-                Debug.Log(hit.collider.gameObject.tag);
-                Vector3 spawnPosition = rightHandTransform.position + rightHandTransform.forward * 0.75f;
-                currentRightHandWall = Instantiate(prefabCandycane, spawnPosition, rightHandTransform.rotation, rightHandTransform);
-                currentRightHandWall.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                currentRightHandWall.transform.localScale = currentRightHandWall.transform.localScale * 0.50f;
-
-                holdingTopping = true;
-
-            } else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Toppings")){
+            } else if (hit.collider.gameObject.name == "candycane" && hit.collider.gameObject.tag == "Original") {
+                GenerateTopping(prefabCandycane);
+            } else if (hit.collider.gameObject.name == "RedGumdrop" && hit.collider.gameObject.tag == "Original") {
+                GenerateTopping(prefabRedGumdrop);
+            } else if (hit.collider.gameObject.name == "BlueGumdrop" && hit.collider.gameObject.tag == "Original") {
+                GenerateTopping(prefabBlueGumdrop);
+            } else if (hit.collider.gameObject.name == "Snowflake" && hit.collider.gameObject.tag == "Original") {
+                GenerateTopping2(prefabSnowflake);
+            } else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Toppings")) {
                 Debug.Log(hit.collider.gameObject.name);
                 Debug.Log(hit.collider.gameObject.tag);
 
@@ -148,6 +166,30 @@ public class RaycastGrabber : MonoBehaviour
                 holdingTopping = true;
             }
         }
+    }
+
+    void GenerateTopping(GameObject prefabTopping) {
+        if (holdingTopping) {
+            DestroyCurrentWall();
+        }
+        Vector3 spawnPosition = rightHandTransform.position + rightHandTransform.forward * 0.75f;
+        currentRightHandWall = Instantiate(prefabTopping, spawnPosition, rightHandTransform.rotation, rightHandTransform);
+        currentRightHandWall.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        currentRightHandWall.transform.localScale = currentRightHandWall.transform.localScale * 0.50f;
+
+        holdingTopping = true;
+    }
+    void GenerateTopping2(GameObject prefabTopping) {
+        if (holdingTopping) {
+            DestroyCurrentWall();
+        }
+        Vector3 spawnPosition = rightHandTransform.position + rightHandTransform.forward * 0.75f;
+        currentRightHandWall = Instantiate(prefabTopping, spawnPosition, rightHandTransform.rotation, rightHandTransform);
+        //currentRightHandWall.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        currentRightHandWall.transform.rotation = Quaternion.Euler(0, 180, 0);
+        currentRightHandWall.transform.localScale = currentRightHandWall.transform.localScale * 0.50f;
+
+        holdingTopping = true;
     }
 
     void HighlightObject(InputAction.CallbackContext __) {

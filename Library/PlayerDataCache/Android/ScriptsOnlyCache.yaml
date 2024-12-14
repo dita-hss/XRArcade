@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - DebugLog
     - RaycastGrabber
+    - WhippedCreamPlacer
     Unity.InputSystem.dll:
     - UnityEngine.InputSystem.InputActionAsset
     - UnityEngine.InputSystem.InputActionReference
@@ -155,6 +156,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 104
@@ -162,51 +167,53 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 464}
+    - Class: 114
+      Script: {instanceID: 468}
+    - Class: 114
       Script: {instanceID: 472}
     - Class: 114
       Script: {instanceID: 476}
     - Class: 114
-      Script: {instanceID: 480}
+      Script: {instanceID: 17084}
     - Class: 114
-      Script: {instanceID: 484}
+      Script: {instanceID: 17100}
     - Class: 114
-      Script: {instanceID: 17092}
+      Script: {instanceID: 17544}
     - Class: 114
-      Script: {instanceID: 17108}
+      Script: {instanceID: 17910}
     - Class: 114
-      Script: {instanceID: 17552}
+      Script: {instanceID: 18776}
     - Class: 114
-      Script: {instanceID: 17918}
+      Script: {instanceID: 19128}
     - Class: 114
-      Script: {instanceID: 18784}
+      Script: {instanceID: 19450}
     - Class: 114
-      Script: {instanceID: 19136}
+      Script: {instanceID: 19736}
     - Class: 114
-      Script: {instanceID: 19458}
+      Script: {instanceID: 19788}
     - Class: 114
-      Script: {instanceID: 19744}
+      Script: {instanceID: 20074}
     - Class: 114
-      Script: {instanceID: 19796}
+      Script: {instanceID: 20078}
     - Class: 114
-      Script: {instanceID: 20082}
+      Script: {instanceID: 20168}
     - Class: 114
-      Script: {instanceID: 20086}
+      Script: {instanceID: 20218}
     - Class: 114
-      Script: {instanceID: 20176}
+      Script: {instanceID: 20310}
     - Class: 114
-      Script: {instanceID: 20226}
+      Script: {instanceID: 20740}
     - Class: 114
-      Script: {instanceID: 20318}
+      Script: {instanceID: 20768}
     - Class: 114
-      Script: {instanceID: 20748}
+      Script: {instanceID: 20976}
     - Class: 114
-      Script: {instanceID: 20776}
+      Script: {instanceID: 21164}
     - Class: 114
-      Script: {instanceID: 20984}
+      Script: {instanceID: 21820}
     - Class: 114
-      Script: {instanceID: 21172}
-    - Class: 114
-      Script: {instanceID: 21944}
+      Script: {instanceID: 27656}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -1572,6 +1579,12 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
+      Hash: 6357f9a4933feb8770bda542aa9c8903
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: RaycastGrabber
+  - hash:
+      serializedVersion: 2
       Hash: efdee7a47b986009f900c14b130023bd
     assemblyName: Unity.XR.Interaction.Toolkit
     namespaceName: UnityEngine.XR.Interaction.Toolkit.UI
@@ -1584,10 +1597,10 @@ ScriptsOnlyBuild:
     className: Vector3AffordanceThemeDatum
   - hash:
       serializedVersion: 2
-      Hash: ea8d35ed3a5e7ba2ced79b4b9539d951
+      Hash: 78baf7965c1392df4a7bc3f452d88122
     assemblyName: Assembly-CSharp
     namespaceName: 
-    className: RaycastGrabber
+    className: WhippedCreamPlacer
   platform: 13
   scenePathNames:
   - Assets/Scenes/MainScene.unity
